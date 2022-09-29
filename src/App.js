@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css';
 import Header from './components/Header'
-import CryptoHome from './pages/Home'
+import Home from './pages/Home'
 import Crypto from './pages/Crypto'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -32,7 +32,7 @@ function App() {
         <CssBaseline />
         <Header toggleTheme={toggleTheme} />
         <Routes>
-          <Route path="/" element={<CryptoHome />} exact />
+          <Route path="/" element={<Home />} exact />
           <Route path="/crypto/:id" element={<Crypto />} />
         </Routes>
       </ThemeProvider>
