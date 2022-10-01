@@ -5,8 +5,7 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import AliceCarousel from 'react-alice-carousel';
 import { Link } from 'react-router-dom';
 import { numbersWithCommas } from '../../helpers/string'
-import { Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles';
+import { Typography, useTheme, ThemeProvider, Container } from '@mui/material'
 
 const Carousel = () => {
   const theme = useTheme()
@@ -15,7 +14,12 @@ const Carousel = () => {
     carousel: {
       height: "50%",
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+    },
+    carouselItemContainer: {
+      "&:hover": {
+        backgroundColor: theme.palette.action.selected,
+      },
     },
     carouselItem: {
       display: "flex",
@@ -24,6 +28,11 @@ const Carousel = () => {
       cursor: "pointer",
       textTransform: "uppercase",
       color: "white",
+    },
+    carouselItemPrice: {
+      color: theme.palette.text.primary,
+      fontSize: 22,
+      fontWeight: 500,
     }
   }
 
@@ -34,7 +43,6 @@ const Carousel = () => {
     setTrendingCoins(data)
   }
 
-  console.log(trendingCoins)
   useEffect(() => {
     fetchTrendingCoins()
   }, [])
@@ -42,43 +50,35 @@ const Carousel = () => {
   const items = trendingCoins.map((crypto) => {
     let profit = crypto?.price_change_percentage_24h >= 0;
     return (
-      <Link
-        style={styles.carouselItem}
-        to={`/crypto/${crypto.id}`}
-      >
-        <img
-          src={crypto?.image}
-          alt={crypto?.name}
-          height="80"
-          style={{ marginBottom: 10 }}
-        />
-        <Typography
-          sx={{
-            color: theme.palette.text.primary,
-          }}
+      <Container sx={styles.carouselItemContainer}>
+        <Link
+          style={styles.carouselItem}
+          to={`/crypto/${crypto.id}`}
         >
-          $
-          &nbsp;
-          <span
-            style={{
-              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
-              fontWeight: 500,
-            }}
-          >
-            {profit && "+"}
-            {crypto?.price_change_percentage_24h?.toFixed(2)}%
-          </span>
-        </Typography>
-        <Typography
-          sx={{
-            color: theme.palette.text.primary,
-            fontSize: 22,
-            fontWeight: 500,
-          }}
-        >
-          ${numbersWithCommas(crypto?.current_price.toFixed(2))}
-        </Typography>
-      </Link>
+          <img
+            src={crypto?.image}
+            alt={crypto?.name}
+            height="80"
+            style={{ marginBottom: 10, marginTop: 10 }}
+          />
+          <ThemeProvider theme={theme}>
+            <Typography
+              sx={{
+                color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                fontWeight: 500,
+              }}
+            >
+              {profit && "+"}
+              {crypto?.price_change_percentage_24h?.toFixed(2)}%
+            </Typography>
+            <Typography
+              sx={styles.carouselItemPrice}
+            >
+              ${numbersWithCommas(crypto?.current_price.toFixed(2))}
+            </Typography>
+          </ThemeProvider>
+        </Link>
+      </Container>
     )
   })
 
@@ -105,7 +105,6 @@ const Carousel = () => {
         autoPlay
       />
     </div>
-
   )
 }
 

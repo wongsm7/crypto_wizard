@@ -1,5 +1,4 @@
-import { Typography, Container } from '@mui/material'
-import { useTheme } from '@mui/material/styles';
+import { Typography, Container, useTheme, ThemeProvider } from '@mui/material'
 import React from 'react'
 import Carousel from './Carousel'
 
@@ -7,17 +6,14 @@ const Banner = () => {
     const theme = useTheme()
 
     const styles = {
-        banner: {
-            backgroundColor: theme.palette.background.default,
-        },
-        bannerContent: {
+        container: {
             height: 400,
             display: "flex",
             flexDirection: "column",
-            paddingTop: 10,
+            paddingTop: 5,
             justifyContent: "space-around",
         },
-        tagline: {
+        title: {
             display: "flex",
             height: "40%",
             flexDirection: "column",
@@ -26,33 +22,33 @@ const Banner = () => {
         },
     };
     return (
-        <div style={styles.banner}>
-            <Container sx={styles.bannerContent}>
-                <div style={styles.tagline}>
+        <ThemeProvider theme={theme}>
+            <Container sx={styles.container}>
+                <div style={styles.title}>
                     <Typography
                         variant="h2"
-                        style={{
+                        sx={{
                             fontWeight: "bold",
-                            marginBottom: 15,
+                            marginBottom: 2,
                             fontFamily: "Montserrat",
                         }}
                     >
-                        Crypto Hunter
+                        Crypto Wizard
                     </Typography>
                     <Typography
                         variant="subtitle2"
                         sx={{
-                            color: "darkgrey",
+                            color: theme.palette.text.secondary,
                             textTransform: "capitalize",
                             fontFamily: "Montserrat",
                         }}
                     >
-                        Get all the Info regarding your favorite Crypto Currency
+                        Get the latest prices for your favorite Crypto Currencies
                     </Typography>
                 </div>
                 <Carousel />
             </Container>
-        </div>
+        </ThemeProvider>
     )
 }
 

@@ -28,7 +28,7 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme ? themeLight : themeDark}>
+      <ThemeProvider theme={theme ? themeDark : themeLight}>
         <CssBaseline />
         <Header toggleTheme={toggleTheme} />
         <Routes>
