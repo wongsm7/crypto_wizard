@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Typography, Toolbar, AppBar, ToggleButton, useTheme, ThemeProvider, Box } from '@mui/material';
+import { Container, Typography, Toolbar, AppBar, ToggleButton, useTheme, ThemeProvider } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -39,7 +39,7 @@ const Header = ({ toggleTheme }) => {
             <AppBar position="static" color="inherit">
                 <Container>
                     <Toolbar>
-                        <img src={Logo} style={styles.image} />
+                        <img src={Logo} style={styles.image} alt="logo" />
                         <Typography onClick={() => navigate("/")} variant="h5" component="div" sx={styles.title}>
                             Crypto Wizard
                         </Typography>

@@ -139,7 +139,7 @@ const CryptoList = () => {
           }
         </TableContainer>
         <Pagination 
-          count={(handleSearch()?.length / 10).toFixed(0)}
+          count={(handleSearch()?.length / 10).toFixed(0) || 0}
           style={{
             padding: 20,
             width: "100%",
@@ -147,7 +147,7 @@ const CryptoList = () => {
             justifyContent: "center",
             marginTop: 15
           }}
-          onChange={(_, value) => {
+          onChange={(e, value) => {
             setPage(value);
           }}
         />
