@@ -34,8 +34,8 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: '25px',
-    padding: 40,
+    marginBottom: '75px',
+    padding: 50,
     width: '100%'
   },
   buttons: {
@@ -57,8 +57,6 @@ const CryptoChart = () => {
     const { data } = await axios.get(ChartData(id, days))
     setChartData(data.prices)
   }
-
-  console.log(chartData)
 
   useEffect(() => {
     fetchChartData()
@@ -91,6 +89,8 @@ const CryptoChart = () => {
                       data: chartData.map((coin) => coin[1]),
                       label: `Price ( Past ${days} Days ) in usd`,
                       borderColor: theme.palette.text.primary,
+                      color: '#00ff00',
+                      backgroundColor: 'rgba(255, 0, 0, 0.1)'
                     },
                   ],
                 }}

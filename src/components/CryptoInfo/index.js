@@ -16,14 +16,11 @@ const CryptoInfo = () => {
         setCryptoData(data)
     }
 
-    console.log(cryptoData)
-
     useEffect(() => {
         fetchSingleCryptoData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log()
 
     const styles = {
         container: {
@@ -43,10 +40,17 @@ const CryptoInfo = () => {
         description: {
             textAlign: 'justify',
             padding: '25px',
-            fontFamily: "Montserrat"
+            fontFamily: "Montserrat",
+            '& > a': {
+                color: theme.palette.text.primary,
+                fontWeight: 'bold'
+            }
         },
         data: {
-
+            alignSelf: "start",
+            padding: 25,
+            paddingTop: 10,
+            width: "100%",
         }
     }
 
