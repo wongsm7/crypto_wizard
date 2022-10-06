@@ -5,7 +5,7 @@ import { ChartData } from '../../services/api';
 import { useTheme, ThemeProvider, CircularProgress } from '@mui/material'
 import { Line } from 'react-chartjs-2';
 import {
-  Chart, LineElement, PointElement, LinearScale, Title, CategoryScale
+  Chart, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip
 } from "chart.js";
 import SelectButton from './SelectButton'
 
@@ -45,7 +45,7 @@ const styles = {
     width: "100%",
   }
 }
-Chart.register(LineElement, PointElement, LinearScale, Title, CategoryScale);
+Chart.register(LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip);
 
 const CryptoChart = () => {
   const theme = useTheme()
@@ -89,8 +89,7 @@ const CryptoChart = () => {
                       data: chartData.map((coin) => coin[1]),
                       label: `Price ( Past ${days} Days ) in usd`,
                       borderColor: theme.palette.text.primary,
-                      color: '#00ff00',
-                      backgroundColor: 'rgba(255, 0, 0, 0.1)'
+                      backgroundColor: theme.palette.text.primary,
                     },
                   ],
                 }}
@@ -98,6 +97,28 @@ const CryptoChart = () => {
                   elements: {
                     point: {
                       radius: 1,
+                    },
+                  },
+                  interaction: {
+                    mode: "index",
+                    intersect: false,
+                  },
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      display: false
+                    },
+                    title: {
+                      display: true,
+                      text: `Price (Past ${days} Days) in USD`,
+                      color: theme.palette.text.primary
+                    },
+                    tooltip: {
+                      display: false,
+                    },
+                    hover: {
+                      mode: "nearest",
+                      intersect: true,
                     },
                   },
                 }}
