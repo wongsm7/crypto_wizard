@@ -26,6 +26,7 @@ const CryptoList = () => {
 
   useEffect(() => {
     fetchCryptos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency])
 
   const handleSearch = () => {
@@ -140,7 +141,7 @@ const CryptoList = () => {
             )
           }
         </TableContainer>
-        <Pagination 
+        <Pagination
           count={(handleSearch()?.length / 10).toFixed(0) || 0}
           style={{
             padding: 20,
