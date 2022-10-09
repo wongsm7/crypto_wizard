@@ -5,6 +5,7 @@ import CryptoSearch from './CryptoSearch'
 import { numbersWithCommas } from '../../helpers/string'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import { CryptoState } from './../../CryptoContext';
 
 const CryptoList = () => {
   const theme = useTheme()
@@ -12,11 +13,12 @@ const CryptoList = () => {
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { currency } = CryptoState()
 
   const fetchCryptos = async () => {
     setLoading(true)
-    const { data } = await axios.get(CryptoListData())
+    const { data } = await axios.get(CryptoListData(currency))
     setCryptos(data)
     setLoading(false)
   }
@@ -24,7 +26,7 @@ const CryptoList = () => {
 
   useEffect(() => {
     fetchCryptos()
-  }, [])
+  }, [currency])
 
   const handleSearch = () => {
     return cryptos.filter((crypto) =>

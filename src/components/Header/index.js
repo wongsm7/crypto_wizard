@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { Container, Typography, Toolbar, AppBar, ToggleButton, useTheme, ThemeProvider } from '@mui/material';
+import { Container, Typography, Toolbar, AppBar, ToggleButton, useTheme, ThemeProvider, Select, MenuItem } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import Logo from '../../images/wizard.png';
+import { CryptoState } from '../../CryptoContext'
 
 const Header = ({ toggleTheme }) => {
     const theme = useTheme()
     const [toggleState, setToggleState] = useState(true)
     const navigate = useNavigate();
+    const { currency, setCurrency } = CryptoState()
 
     const handleToggleTheme = () => {
         setToggleState(!toggleState)
@@ -31,6 +33,11 @@ const Header = ({ toggleTheme }) => {
             height: "30px",
             backgroundColor: "white",
             marginRight: "10px"
+        },
+        select: {
+            width: 100,
+            height: 40,
+            marginRIght: 15
         }
     }
 
@@ -43,6 +50,18 @@ const Header = ({ toggleTheme }) => {
                         <Typography onClick={() => navigate("/")} variant="h5" component="div" sx={styles.title}>
                             Crypto Wizard
                         </Typography>
+                        <Select 
+                            variant='outlined' 
+                            sx={styles.select}
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                        >
+                            <MenuItem value="usd">USD</MenuItem>
+                            <MenuItem value="sgd">SGD</MenuItem>
+                            <MenuItem value="cad">CAD</MenuItem>
+                            <MenuItem value="aud">AUD</MenuItem>
+                            <MenuItem value="hkd">HKD</MenuItem>
+                        </Select>
                         <ToggleButton
                             onClick={handleToggleTheme}
                             value={toggleState}

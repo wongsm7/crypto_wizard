@@ -6,6 +6,7 @@ import AliceCarousel from 'react-alice-carousel';
 import { Link } from 'react-router-dom';
 import { numbersWithCommas } from '../../helpers/string'
 import { Typography, useTheme, ThemeProvider, Container } from '@mui/material'
+import { CryptoState } from './../../CryptoContext';
 
 const Carousel = () => {
   const theme = useTheme()
@@ -36,16 +37,17 @@ const Carousel = () => {
     }
   }
 
+  const { currency } = CryptoState()
   const [trendingCoins, setTrendingCoins] = useState([])
 
   const fetchTrendingCoins = async () => {
-    const { data } = await axios.get(TrendingCoins())
+    const { data } = await axios.get(TrendingCoins(currency))
     setTrendingCoins(data)
   }
 
   useEffect(() => {
     fetchTrendingCoins()
-  }, [])
+  }, [currency])
 
   const items = trendingCoins.map((crypto) => {
     let profit = crypto?.price_change_percentage_24h >= 0;

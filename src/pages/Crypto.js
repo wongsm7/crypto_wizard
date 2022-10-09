@@ -17,11 +17,6 @@ const styles = {
   },
   right: {
     flex: 7,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 50
   }
 }
 

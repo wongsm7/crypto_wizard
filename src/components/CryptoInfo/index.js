@@ -5,11 +5,13 @@ import axios from 'axios'
 import { Typography, LinearProgress, useTheme } from '@mui/material';
 import parse from "html-react-parser";
 import { numbersWithCommas } from '../../helpers/string'
+import { CryptoState } from './../../CryptoContext';
 
 const CryptoInfo = () => {
     const theme = useTheme()
     const [cryptoData, setCryptoData] = useState()
     const { id } = useParams()
+    const { currency } = CryptoState()
 
     const fetchSingleCryptoData = async () => {
         const { data } = await axios.get(SingleCrypto(id))
@@ -75,10 +77,10 @@ const CryptoInfo = () => {
                     Rank: {cryptoData.market_cap_rank}
                 </Typography>
                 <Typography variant='h5'>
-                    Current Price: ${numbersWithCommas(cryptoData.market_data.current_price.usd)}
+                    Current Price: ${numbersWithCommas(cryptoData.market_data.current_price[currency])}
                 </Typography>
                 <Typography variant='h5'>
-                    Market Cap: ${numbersWithCommas(cryptoData.market_data.market_cap.usd)}
+                    Market Cap: ${numbersWithCommas(cryptoData.market_data.market_cap[currency])}
                 </Typography>
             </div>
         </div>

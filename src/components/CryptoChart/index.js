@@ -8,6 +8,7 @@ import {
   Chart, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip
 } from "chart.js";
 import SelectButton from './SelectButton'
+import { CryptoState } from './../../CryptoContext';
 
 const chartDays = [
   {
@@ -52,16 +53,17 @@ const CryptoChart = () => {
   const { id } = useParams()
   const [chartData, setChartData] = useState()
   const [days, setDays] = useState(2)
+  const { currency } = CryptoState()
 
   const fetchChartData = async () => {
-    const { data } = await axios.get(ChartData(id, days))
+    const { data } = await axios.get(ChartData(id, days, currency))
     setChartData(data.prices)
   }
 
   useEffect(() => {
     fetchChartData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [days])
+  }, [days, currency])
 
   return (
     <ThemeProvider theme={theme}>
@@ -87,13 +89,25 @@ const CryptoChart = () => {
                   datasets: [
                     {
                       data: chartData.map((coin) => coin[1]),
-                      label: `Price ( Past ${days} Days ) in usd`,
+                      label: `Price ( Past ${days} Days ) in ${currency.toUpperCase()}`,
                       borderColor: theme.palette.text.primary,
                       backgroundColor: theme.palette.text.primary,
                     },
                   ],
                 }}
                 options={{
+                  scales: {
+                    x: {
+                      grid: {
+                        display: false
+                      }
+                    },
+                    y: {
+                      grid: {
+                        display: false
+                      }
+                    }
+                  },
                   elements: {
                     point: {
                       radius: 1,
@@ -110,11 +124,8 @@ const CryptoChart = () => {
                     },
                     title: {
                       display: true,
-                      text: `Price (Past ${days} Days) in USD`,
+                      text: `Price (Past ${days} Days) in ${currency.toUpperCase()}`,
                       color: theme.palette.text.primary
-                    },
-                    tooltip: {
-                      display: false,
                     },
                     hover: {
                       mode: "nearest",
