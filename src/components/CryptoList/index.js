@@ -1,28 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { CryptoListData } from '../../services/api'
 import { Typography, Container, useTheme, ThemeProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, LinearProgress, Pagination } from '@mui/material'
 import CryptoSearch from './CryptoSearch'
 import { numbersWithCommas } from '../../helpers/string'
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
 import { CryptoState } from './../../CryptoContext';
 
 const CryptoList = () => {
   const theme = useTheme()
-  const [cryptos, setCryptos] = useState([])
-  const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
-  const { currency } = CryptoState()
-
-  const fetchCryptos = async () => {
-    setLoading(true)
-    const { data } = await axios.get(CryptoListData(currency))
-    setCryptos(data)
-    setLoading(false)
-  }
-
+  const { currency, cryptos, loading, fetchCryptos } = CryptoState()
 
   useEffect(() => {
     fetchCryptos()
