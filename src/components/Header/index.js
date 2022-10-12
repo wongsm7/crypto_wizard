@@ -5,6 +5,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import Logo from '../../images/wizard.png';
 import { CryptoState } from '../../CryptoContext'
+import AuthModal from '../Authentication';
 
 const Header = ({ toggleTheme }) => {
     const theme = useTheme()
@@ -26,7 +27,9 @@ const Header = ({ toggleTheme }) => {
             cursor: "pointer",
         },
         button: {
-            border: "none"
+            border: "none",
+            marginRight: "15px",
+            marginLeft: "15px"
         },
         image: {
             borderRadius: "20px",
@@ -37,7 +40,6 @@ const Header = ({ toggleTheme }) => {
         select: {
             width: 100,
             height: 40,
-            marginRIght: 15
         }
     }
 
@@ -69,6 +71,7 @@ const Header = ({ toggleTheme }) => {
                         >
                             {toggleState ? < LightModeIcon /> : <DarkModeIcon />}
                         </ToggleButton>
+                        <AuthModal/>
                     </Toolbar>
                 </Container >
             </AppBar>
