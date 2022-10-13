@@ -1,17 +1,47 @@
 import React, { useState } from 'react'
 import { Box, TextField, Button, useTheme } from '@mui/material'
-
+import { CryptoState } from '../../CryptoContext'
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const SignUp = ({ handleClose }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const { setAlerts } = CryptoState()
 
     const theme = useTheme()
 
-    const handleSubmit = () => {
-
-    }
+    const handleSubmit = async () => {
+        if (password !== confirmPassword) {
+            setAlerts({
+                open: true,
+                message: "Your passwords do not match",
+                type: "error"
+            })
+        } else {
+            try {
+                const result = await createUserWithEmailAndPassword(
+                  auth,
+                  email,
+                  password
+                );
+                setAlerts({
+                  open: true,
+                  message: `Sign Up Successful. Welcome ${result.user.email}`,
+                  type: "success",
+                });
+          
+                handleClose();
+              } catch (error) {
+                setAlerts({
+                  open: true,
+                  message: error.message,
+                  type: "error",
+                });
+              }
+            };
+        }
 
     const styles = {
         box: {
