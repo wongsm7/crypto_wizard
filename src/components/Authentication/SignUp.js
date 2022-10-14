@@ -33,10 +33,10 @@ const SignUp = ({ handleClose }) => {
                 });
           
                 handleClose();
-              } catch (error) {
+              } catch (e) {
                 setAlerts({
                   open: true,
-                  message: error.message,
+                  message: e.message,
                   type: "error",
                 });
               }
@@ -55,6 +55,7 @@ const SignUp = ({ handleClose }) => {
             '&:hover': {
                 backgroundColor: theme.palette.action.hover,
             },
+            height: '50px'
         }
     }
     

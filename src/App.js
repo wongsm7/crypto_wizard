@@ -6,7 +6,7 @@ import Crypto from './pages/Crypto'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Alert } from './components/Banner/Alert'
+import Alert from './components/Banner/Alert'
 
 const themeLight = createTheme({
   palette: {

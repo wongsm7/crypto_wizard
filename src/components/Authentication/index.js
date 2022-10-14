@@ -6,6 +6,10 @@ import Modal from '@mui/material/Modal';
 import { useTheme, ThemeProvider, styled, AppBar, Tab, Tabs } from '@mui/material'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
+import GoogleButton from "react-google-button";
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { CryptoState } from '../../CryptoContext';
+import { auth } from '../../firebase'
 
 const AuthModal = () => {
     const theme = useTheme()
@@ -13,10 +17,30 @@ const AuthModal = () => {
     const [value, setValue] = React.useState(0);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { setAlerts } = CryptoState()
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const googleProvider = new GoogleAuthProvider()
+
+    const signInWithGoogle = () => {
+        signInWithPopup(auth, googleProvider).then(res => {
+            setAlerts({
+                open: true,
+                message: `Signed up successfully. Welcome ${res.user.email}`,
+                type: 'success'
+            })
+            handleClose()
+        }).catch((e) => {
+            setAlerts({
+                open: true,
+                message: e.message,
+                type: 'error'
+            })
+        })
+    }
 
     const styles = {
         box: {
@@ -46,6 +70,22 @@ const AuthModal = () => {
         tabs: {
             borderRadius: 10,
             indicatorColor: 'red'
+        },
+        google: {
+            paddingTop: '20px',
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center",
+            gap: '20px',
+            fontSize: '20px',
+            height: '50%'
+        },
+        googlebutton: {
+            width: "100%",
+            outline: "none"
+        },
+        or: {
+            fontSize: '12px',
         }
     };
 
@@ -86,6 +126,15 @@ const AuthModal = () => {
                         <SignIn handleClose={handleClose} />
                         : <SignUp handleClose={handleClose} />
                     }
+                    <Box sx={styles.google}>
+                        <span style={styles.or}>
+                            or
+                        </span>
+                        <GoogleButton
+                            style={styles.googlebutton}
+                            onClick={signInWithGoogle}
+                        />
+                    </Box>
                 </Box>
             </Modal>
         </ThemeProvider>

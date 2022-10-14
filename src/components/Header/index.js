@@ -6,12 +6,13 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import Logo from '../../images/wizard.png';
 import { CryptoState } from '../../CryptoContext'
 import AuthModal from '../Authentication';
+import UserSidebar from '../Authentication/UserSidebar';
 
 const Header = ({ toggleTheme }) => {
     const theme = useTheme()
     const [toggleState, setToggleState] = useState(true)
     const navigate = useNavigate();
-    const { currency, setCurrency } = CryptoState()
+    const { currency, setCurrency, user } = CryptoState()
 
     const handleToggleTheme = () => {
         setToggleState(!toggleState)
@@ -71,7 +72,7 @@ const Header = ({ toggleTheme }) => {
                         >
                             {toggleState ? < LightModeIcon /> : <DarkModeIcon />}
                         </ToggleButton>
-                        <AuthModal/>
+                        { user ? <UserSidebar/> : <AuthModal/>}
                     </Toolbar>
                 </Container >
             </AppBar>
