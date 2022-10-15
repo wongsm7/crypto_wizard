@@ -77,7 +77,7 @@ const Carousel = () => {
             <Typography
               sx={styles.carouselItemPrice}
             >
-              ${numbersWithCommas(crypto?.current_price.toFixed(2))}
+              ${numbersWithCommas(crypto?.current_price)}
             </Typography>
           </ThemeProvider>
         </Link>

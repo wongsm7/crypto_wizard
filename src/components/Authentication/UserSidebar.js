@@ -165,7 +165,7 @@ export default function UserSidebar() {
                                                     <span>{crypto.name}</span>
                                                     <span style={{ display: "flex", gap: 8 }}>
                                                         ${" "}
-                                                        {numbersWithCommas(crypto.current_price.toFixed(2))}
+                                                        {numbersWithCommas(crypto.current_price)}
                                                         <AiFillDelete
                                                             style={{ cursor: "pointer" }}
                                                             fontSize="16"

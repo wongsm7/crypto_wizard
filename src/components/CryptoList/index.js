@@ -100,7 +100,7 @@ const CryptoList = () => {
                         </TableCell>
                         <TableCell align="right">
                           $
-                          {numbersWithCommas(row.current_price.toFixed(2))}
+                          {numbersWithCommas(row.current_price)}
                         </TableCell>
                         <TableCell
                           align="right"

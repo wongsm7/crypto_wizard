@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "chart.js": "^3.5.1",
     "firebase": "^9.12.0",
+    "from-exponential": "^1.1.1",
     "html-react-parser": "^3.0.4",
     "react": "^18.2.0",
     "react-alice-carousel": "^2.6.4",
