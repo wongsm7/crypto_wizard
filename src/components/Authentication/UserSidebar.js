@@ -2,9 +2,13 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import { CryptoState } from '../../CryptoContext';
-import { Avatar, useTheme } from '@mui/material';
+import { Avatar, useTheme, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import { auth } from "../../firebase";
+import { AiFillDelete } from "react-icons/ai";
+import { numbersWithCommas } from '../../helpers/string'
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase'
 
 export default function UserSidebar() {
     const [state, setState] = React.useState({
@@ -15,7 +19,7 @@ export default function UserSidebar() {
     });
 
     const theme = useTheme()
-    const { user, setAlerts } = CryptoState()
+    const { user, setAlerts, watchlist, cryptos } = CryptoState()
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -33,6 +37,29 @@ export default function UserSidebar() {
             message: "Signed out successfully"
         })
         toggleDrawer()
+    }
+
+    const removeFromWatchlist = async (crypto) => {
+        const cryptoRef = doc(db, "watchlist", user.uid)
+
+        try {
+            await setDoc(
+                cryptoRef,
+                { cryptos: watchlist.filter((wish) => wish !== crypto?.id) },
+                { merge: true }
+            );
+            setAlerts({
+                open: true,
+                message: `${crypto.name} Removed from the Watchlist !`,
+                type: "success",
+            });
+        } catch (e) {
+            setAlerts({
+                open: true,
+                message: e.message,
+                type: "error",
+            })
+        }
     }
 
     const styles = {
@@ -87,6 +114,15 @@ export default function UserSidebar() {
             alignItems: "center",
             gap: 12,
             overflowY: "auto",
+        },
+        watchlistitem: {
+            padding: 10,
+            borderRadius: 5,
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: theme.palette.action.disabled,
         }
     }
 
@@ -118,7 +154,29 @@ export default function UserSidebar() {
                                 </span>
                             </div>
                             <div style={styles.watchlist}>
-                                Watchlist
+                                <Typography variant='h6' sx={{ textDecoration: 'underline' }}>
+                                    Watchlist
+                                </Typography>
+                                {
+                                    cryptos.map((crypto) => {
+                                        if (watchlist.includes(crypto.id))
+                                            return (
+                                                <div style={styles.watchlistitem}>
+                                                    <span>{crypto.name}</span>
+                                                    <span style={{ display: "flex", gap: 8 }}>
+                                                        ${" "}
+                                                        {numbersWithCommas(crypto.current_price.toFixed(2))}
+                                                        <AiFillDelete
+                                                            style={{ cursor: "pointer" }}
+                                                            fontSize="16"
+                                                            onClick={() => removeFromWatchlist(crypto)}
+                                                        />
+                                                    </span>
+                                                </div>
+                                            );
+                                        else return <></>;
+                                    })
+                                }
                             </div>
                             <Button
                                 onClick={signOutofAccount}

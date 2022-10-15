@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { SingleCrypto } from '../../services/api'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
-import { Typography, LinearProgress, useTheme } from '@mui/material';
+import { Typography, LinearProgress, useTheme, Button } from '@mui/material';
 import parse from "html-react-parser";
 import { numbersWithCommas } from '../../helpers/string'
 import { CryptoState } from './../../CryptoContext';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase'
 
 const CryptoInfo = () => {
     const theme = useTheme()
     const [cryptoData, setCryptoData] = useState()
     const { id } = useParams()
-    const { currency } = CryptoState()
+    const { currency, user, setAlerts, watchlist } = CryptoState()
 
     const fetchSingleCryptoData = async () => {
         const { data } = await axios.get(SingleCrypto(id))
@@ -23,6 +25,51 @@ const CryptoInfo = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const addToWatchlist = async () => {
+        const cryptoRef = doc(db, "watchlist", user.uid)
+
+        try {
+            await setDoc(cryptoRef,
+                { cryptos: watchlist ? [...watchlist, cryptoData?.id] : cryptoData?.id }
+            )
+            setAlerts({
+                open: true,
+                message: `${cryptoData.name} Added to the Watchlist !`,
+                type: "success",
+            });
+        } catch (e) {
+            setAlerts({
+                open: true,
+                message: e.message,
+                type: "error",
+            })
+        }
+    }
+
+    const removeFromWatchlist = async () => {
+        const cryptoRef = doc(db, "watchlist", user.uid)
+
+        try {
+            await setDoc(
+                cryptoRef,
+                { cryptos: watchlist.filter((wish) => wish !== cryptoData?.id) },
+                { merge: true }
+            );
+            setAlerts({
+                open: true,
+                message: `${cryptoData.name} Removed from the Watchlist !`,
+                type: "success",
+            });
+        } catch (e) {
+            setAlerts({
+                open: true,
+                message: e.message,
+                type: "error",
+            })
+        }
+    }
+
+    const isCoinInWatchlist = watchlist.includes(cryptoData?.id)
 
     const styles = {
         container: {
@@ -53,11 +100,18 @@ const CryptoInfo = () => {
             padding: 25,
             paddingTop: 10,
             width: "100%",
+        },
+        button: {
+            backgroundColor: theme.palette.action.active,
+            '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+            },
+            height: '50px',
         }
     }
 
     if (!cryptoData)
-        return <LinearProgress sx={{ backgroundColor: theme.palette.text.primary}}/>;
+        return <LinearProgress sx={{ backgroundColor: theme.palette.text.primary }} />;
 
     return (
         <div style={styles.container}>
@@ -83,6 +137,20 @@ const CryptoInfo = () => {
                     Market Cap: ${numbersWithCommas(cryptoData.market_data.market_cap[currency])}
                 </Typography>
             </div>
+            {
+                user && (
+                    <Button
+                        variant="contained"
+                        size="large"
+                        sx={styles.button}
+                        onClick={isCoinInWatchlist ? removeFromWatchlist : addToWatchlist}
+                    >
+                        <Typography variant='h6'>
+                            {isCoinInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+                        </Typography>
+                    </Button>
+                )
+            }
         </div>
     )
 }
