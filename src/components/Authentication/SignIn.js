@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, TextField, Button, useTheme } from '@mui/material'
+import { Box, TextField, Button, useTheme, Typography } from '@mui/material'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { CryptoState } from '../../CryptoContext'
@@ -45,14 +45,15 @@ const SignIn = ({ handleClose }) => {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
-            marginTop: "30px"
+            marginTop: "30px",
         },
         button: {
             backgroundColor: theme.palette.action.active,
             '&:hover': {
                 backgroundColor: theme.palette.action.hover,
             },
-            height: '50px'
+            height: '50px',
+            textTransform: 'none'
         }
     }
 
@@ -81,7 +82,9 @@ const SignIn = ({ handleClose }) => {
                 sx={styles.button}
                 onClick={handleSubmit}
             >
-                Sign In
+                <Typography variant="body1">
+                    Sign In
+                </Typography>
             </Button>
         </Box>
     )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CryptoChart from '../components/CryptoChart';
 import CryptoInfo from '../components/CryptoInfo';
 
@@ -21,13 +21,17 @@ const styles = {
 }
 
 const Crypto = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div style={styles.container}>
       <div style={styles.left}>
-        <CryptoInfo/>
+        <CryptoInfo />
       </div>
       <div style={styles.right}>
-        <CryptoChart/>
+        <CryptoChart />
       </div>
     </div>
   )

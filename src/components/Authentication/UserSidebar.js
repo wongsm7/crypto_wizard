@@ -183,7 +183,9 @@ export default function UserSidebar() {
                                 variant="contained"
                                 sx={styles.logoutbutton}
                             >
-                                Sign out
+                                <Typography variant='h6'>
+                                    Sign Out
+                                </Typography>
                             </Button>
                         </div>
                     </Drawer>

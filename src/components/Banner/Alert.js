@@ -1,6 +1,6 @@
 import React from 'react'
 import { Snackbar } from '@mui/material'
-import MuiAlert from '@mui/material/Alert';
+import MuiAlert  from '@mui/material/Alert';
 import { CryptoState } from '../../CryptoContext'
 
 const Alert = () => {
@@ -11,9 +11,6 @@ const Alert = () => {
     // };
 
     const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
 
         setAlerts({ open: false });
     };
@@ -35,13 +32,13 @@ const Alert = () => {
     return (
         <Snackbar
             open={alerts.open}
-            autoHideDuration={3000}
+            autoHideDuration={2000}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            key={'dsadsa'}
             sx={styles.snackbar}
+            key={alerts.message}
         >
-            <MuiAlert severity={alerts.type} sx={styles.alert}>{alerts.message}</MuiAlert>
+            <MuiAlert variant='filled' severity={alerts.type}>{alerts.message}</MuiAlert>
         </Snackbar>
     )
 }

@@ -10,7 +10,10 @@ import Alert from './components/Banner/Alert'
 
 const themeLight = createTheme({
   palette: {
-    mode: 'light'
+    mode: 'light',
+    background: {
+      default: 'rgba(248,250,253, 0.7)'
+    }
   },
 });
 
